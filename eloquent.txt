@@ -1,0 +1,32 @@
+require FCPATH . 'vendor/autoload.php';
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+		$capsule = new Capsule;
+
+		$capsule->addConnection([
+			'driver' => 'mysql',
+			'host' => 'localhost',
+			'database' => 'sipppaju_backup',
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix' => '',
+		]);
+
+		$capsule->addConnection([
+			'driver' => 'mysql',
+			'host' => 'localhost',
+			'database' => 'einsten',
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix' => '',
+		], 'local');
+
+		$capsule->setAsGlobal();
+
+		$capsule->bootEloquent();
+
+		$this->capsule = $capsule;
