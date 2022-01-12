@@ -43,9 +43,9 @@ class Instrumen extends CI_Controller
     {
         $tglsidang = carbon()->parse($data->tanggal_sidang)->isoFormat('dddd, D MMMM Y');
         $jenispihak = $this->jenis_pihak($data->jenis_pihak);
-        $data = Jurusita::find($data->jurusita_id);
+        $js = Jurusita::find($data->jurusita_id);
         notifToJurusita([
-            'number' => $data->keterangan,
+            'number' => $js->keterangan,
             'text' => "*INSTRUMEN PANGGILAN BARU*
             \n$data->nomor_perkara\n$data->pihak\n$data->alamat_pihak\n$jenispihak\n$data->alamat_pihak\nTanggal Sidang:$tglsidang"
         ]);
