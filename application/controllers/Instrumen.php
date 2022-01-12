@@ -31,13 +31,23 @@ class Instrumen extends CI_Controller
         $this->notifJs($data);
         echo json_encode($data);
     }
+    function jenis_pihak($par)
+    {
+        if ($par == 1) {
+            return 'Penggugat/Pemohon';
+        }
+        return 'Terggugat/Termohon';
+    }
 
     public function notifJs($data)
     {
+        $tglsidang = carbon()->parse($data->tanggal_sidang)->isoFormat('dddd, D MMMM Y');
+        $jenispihak = $this->jenis_pihak($data->jenis_pihak);
         $data = Jurusita::find($data->jurusita_id);
         notifToJurusita([
             'number' => $data->keterangan,
-            'text' => '*Instrumen Panggilan Baru* \n *' . $data->pihak . '* \n ' . $data->alamat . '\nTanggal Sidang :' . carbon()->parse($data->tanggal_sidang)->isoFormat('dddd, D MMMM Y') . '\n' . $data->biaya,
+            'text' => "*INSTRUMEN PANGGILAN BARU*
+            \n$data->nomor_perkara\n$data->pihak\n$data->alamat_pihak\n$jenispihak\n$data->alamat_pihak\nTanggal Sidang:$tglsidang"
         ]);
     }
 
