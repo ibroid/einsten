@@ -16,7 +16,7 @@ class Debug extends CI_Controller
                 'username' => $value->keterangan,
                 'password' => password_hash('paju', PASSWORD_DEFAULT),
                 'profile_id' => $value->id,
-                'level_id' => 8,
+                'level_id' => 7,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
             echo $value->nama . '<br>';
@@ -24,6 +24,6 @@ class Debug extends CI_Controller
     }
     public function carbon()
     {
-        // echo carbon()->parse('2022-01-11')->isoFormat('dddd, D MMMM Y');
+        echo carbon()->parse('2022-01-11')->isoFormat('dddd, D MMMM Y');
     }
 }

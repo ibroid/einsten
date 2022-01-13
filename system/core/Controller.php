@@ -96,10 +96,10 @@ class CI_Controller
 
 		$capsule->addConnection([
 			'driver' => 'mysql',
-			'host' => 'localhost',
+			'host' => '192.168.0.212',
 			'database' => 'sipppaju_backup',
-			'username' => 'root',
-			'password' => '',
+			'username' => 'einsten',
+			'password' => 'einsten123',
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
@@ -107,10 +107,10 @@ class CI_Controller
 
 		$capsule->addConnection([
 			'driver' => 'mysql',
-			'host' => 'localhost',
+			'host' => '192.168.0.212',
 			'database' => 'einsten',
-			'username' => 'root',
-			'password' => '',
+			'username' => 'einsten',
+			'password' => 'einsten123',
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
