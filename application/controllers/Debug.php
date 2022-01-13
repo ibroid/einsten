@@ -24,6 +24,6 @@ class Debug extends CI_Controller
     }
     public function carbon()
     {
-        // echo carbon()->parse('2022-01-11')->isoFormat('dddd, D MMMM Y');
+        echo carbon()->parse('2022-01-11')->isoFormat('dddd, D MMMM Y');
     }
 }

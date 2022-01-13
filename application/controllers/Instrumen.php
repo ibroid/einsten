@@ -1,5 +1,6 @@
 <?php
 
+require_once FCPATH . 'vendor/autoload.php';
 require_once APPPATH . 'models/Instrumens.php';
 require_once APPPATH . 'models/Jurusita.php';
 class Instrumen extends CI_Controller
@@ -80,28 +81,113 @@ class Instrumen extends CI_Controller
         $data->delete();
         echo json_encode(TRUE);
     }
-    public function cetak($id)
+    public function cetak($id = '')
     {
         $data = Instrumens::find($id);
+        $sidang = $this->capsule->table('perkara_jadwal_sidang')->where('id', $data->sidang_id)->first();
         if ($data) {
             switch ($data->jenis_panggilan) {
                 case 'Sidang Pertama':
-                    $template = 'relaas_sidang_pertama_pihak' . $data->jenis_pihak . '.docx';
+                    $templatedocx = 'relaas/relaas_sidang_pertama_pihak' . $data->jenis_pihak . '.docx';
+                    $filename = 'SIDANG_PERTAMA_' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
+                    break;
+                case 'Sidang Lanjutan':
+                    $templatedocx = 'relaas/relaas_lanjutan.docx';
+                    $filename = 'SIDANG_LANJUTAN_' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
                     break;
 
                 default:
                     # code...
                     break;
             }
+
+            $template = new \PhpOffice\PhpWord\TemplateProcessor(FCPATH . $templatedocx);
+            $template->setValues(array_merge(
+                $this->replace_data_pihak($data->pihak_id),
+                $this->replace_perkara($data->perkara_id),
+                $this->replace_jurusita($data->jurusita_id),
+                [
+                    'hari_tanggal_sidang' => carbon()->parse($data->tanggal_sidang)->isoFormat('dddd,D MMMM Y'),
+                    'tanggal_sekarang' => carbon()->parse(date('Y-m-d'))->isoFormat('D MMMM Y'),
+                    'hari_tanggal_sekarang' => carbon()->parse(date('Y-m-d'))->isoFormat('dddd,D MMMM Y'),
+                    'ruang_sidang' => $this->ruang_sidang($sidang->ruangan),
+                    'jenis_pihak' => $this->jenis_pihak_sort($data->nomor_perkara, $data->jenis_pihak),
+                ]
+            ));
+            $pathToSave = FCPATH . 'hasil/' . $filename;
+            $template->saveAs($pathToSave);
+            redirect('hasil/' . $filename);
         } else {
             echo 'Data tidak ada';
         }
-        $data_pihak = $this->replace_data_pihak($data->pihak_id);
     }
-    public function replace_data_pihak($data)
+    function ruang_sidang($ruang_id)
     {
+        if ($ruang_id === 1) {
+            return 'Umar Bin Khatab';
+        } else if ($ruang_id === 2) {
+            return 'Abu Musa';
+        } else {
+            return 'Asyuraih';
+        }
+    }
+    public function replace_data_pihak($pihakid)
+    {
+        $pihak = $this->capsule->table('pihak')->where('id', $pihakid)->first();
         return [
-            'nama_pihak' => $data
+            'nama_pihak' => $pihak->nama,
+            'alamat_pihak' => $pihak->alamat,
+            'tempat_tanggal_lahir' => "$pihak->tempat_lahir," . carbon()->parse($pihak->tanggal_lahir)->isoFormat('D MMMM Y'),
+            'pekerjaan_pihak' => $pihak->pekerjaan,
+            'pendidikan_pihak' => $pihak->pendidikan,
+            'alamat_pihak' => $pihak->alamat,
         ];
+    }
+    function jenis_pihak_sort($par, $var)
+    {
+        if (strpos($par, 'Pdt.G') !== false) {
+            if ($var == 1) {
+                return 'Penggugat';
+            }
+            return 'Tergugat';
+        } else {
+            if ($var == 1) {
+                return 'Pemohon';
+            }
+            return 'Termohon';
+        }
+    }
+    public function replace_perkara($perkaraid)
+    {
+        $perkara = $this->capsule->table('perkara')->where('perkara.perkara_id', $perkaraid)->first();
+        return [
+            'nomor_perkara' => $perkara->nomor_perkara,
+            'tanggal_instrumen' => carbon()->parse($perkara->tanggal_pendaftaran)->isoFormat('D MMMM Y'),
+            'nama_penggugat' => $perkara->pihak1_text,
+            'nama_tergugat' => $perkara->pihak2_text,
+            'jenis_perkara' => $perkara->jenis_perkara_text
+        ];
+    }
+    function jenis_pihak_simp($par)
+    {
+        if ($par == 1) {
+            return 'P';
+        }
+        return 'T';
+    }
+    function replace_jurusita($jurusitaid)
+    {
+        $jurusita = $this->capsule->table('jurusita')->where('id', $jurusitaid)->first();
+        return [
+            'nama_jurusita' => $jurusita->nama_gelar,
+            'jenis_jurusita' => $this->jenis_jurusita($jurusita->jabatan)
+        ];
+    }
+    function jenis_jurusita($par)
+    {
+        if ($par === 1) {
+            return 'Jurusita';
+        }
+        return 'Jurusita Pengganti';
     }
 }

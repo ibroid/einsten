@@ -60,6 +60,7 @@
 </div>
 <script src="<?= base_url('assets/js/vue/dist/vue.global.js') ?>"></script>
 <script src="<?= base_url('assets/js/moment/moment.js') ?>"></script>
+<script src="<?= base_url('assets/vendors/simple-datatables/simple-datatables.js') ?>"></script>
 <script>
 	const showLoading = () => {
 		return Swal.fire({
@@ -78,7 +79,7 @@
 		createApp,
 		onMounted,
 		reactive,
-		ref
+		ref,
 	} = Vue;
 
 	const init = {
@@ -180,7 +181,7 @@
 
 	initialize.component('table-instrumen', {
 		template: `	
-			<table class="table table-responsive table-hover table-bordered">
+			<table ref="refTable" class="table table-responsive table-hover table-bordered">
 				<thead>
 					<tr>
 						<th>No</th>
@@ -224,7 +225,10 @@
 			}
 		},
 		setup(props, context) {
-			onMounted(() => {})
+			const refTable = ref(null)
+			onMounted(() => {
+				const dataTable = new simpleDatatables.DataTable(refTable)
+			})
 
 			function toFullDate(date) {
 				return moment(date, 'YYYY/MM/DD').locale('id').format('dddd LL')
@@ -275,7 +279,8 @@
 			return {
 				toFullDate,
 				hapusInstrumen,
-				findrelaas
+				findrelaas,
+				refTable
 			}
 		}
 	})
