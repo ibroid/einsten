@@ -45,11 +45,13 @@ class Instrumen extends CI_Controller
         $tglsidang = carbon()->parse($data->tanggal_sidang)->isoFormat('dddd, D MMMM Y');
         $jenispihak = $this->jenis_pihak($data->jenis_pihak);
         $js = Jurusita::find($data->jurusita_id);
-        notifToJurusita([
-            'number' => $js->keterangan,
-            'text' => "*INSTRUMEN PANGGILAN BARU*
-            \n$data->nomor_perkara\n$data->pihak\n$data->alamat_pihak\n$jenispihak\n$data->alamat_pihak\nTanggal Sidang:$tglsidang"
-        ]);
+        if ($js) {
+            notifToJurusita([
+                'number' => $js->keterangan,
+                'text' => "*INSTRUMEN PANGGILAN BARU*
+                \n$data->nomor_perkara\n$data->pihak\n$data->alamat_pihak\n$jenispihak\n$data->alamat_pihak\nTanggal Sidang:$tglsidang"
+            ]);
+        }
     }
 
     public function today()
@@ -185,9 +187,20 @@ class Instrumen extends CI_Controller
     }
     function jenis_jurusita($par)
     {
-        if ($par === 1) {
+        if ($par == 1) {
             return 'Jurusita';
         }
         return 'Jurusita Pengganti';
+    }
+    public function search()
+    {
+        if (isset($_POST['tanggal_diterima'])) {
+            $data = Instrumens::whereDate('created_at', request('tanggal_diterima'))->where('jurusita_id', auth()->user->profile_id)->orderBy('created_at', 'DESC')->get();
+            echo json_encode($data);
+        }
+        if (isset($_POST['tanggal_sidang'])) {
+            $data = Instrumens::whereDate('tanggal_sidang', request('tanggal_sidang'))->where('jurusita_id', auth()->user->profile_id)->orderBy('created_at', 'DESC')->get();
+            echo json_encode($data);
+        }
     }
 }

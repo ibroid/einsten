@@ -68,7 +68,7 @@
 													<li>{{ps.alamat}}</li>
 													<li>
 														<button v-on:click="kirimInstrumen(ps, 1)" class="btn btn-sm btn-success">Kirim Instrumen</button>
-														<button class="btn btn-sm btn-danger">Kirim Delegasi</button>
+														<button v-on:click="kirimDelegasi(ps, 1)" class="btn btn-sm btn-danger">Kirim Delegasi</button>
 													</li>
 												</ul>
 											</th>
@@ -78,7 +78,7 @@
 													<li>{{pd.alamat}}</li>
 													<li>
 														<button v-on:click="kirimInstrumen(pd, 2)" class="btn btn-sm btn-success">Kirim Instrumen</button>
-														<button class="btn btn-sm btn-danger">Kirim Delegasi</button>
+														<button v-on:click="kirimDelegasi(pd, 2)" class="btn btn-sm btn-danger">Kirim Delegasi</button>
 													</li>
 												</ul>
 											</th>
@@ -244,6 +244,30 @@
 				}
 			}
 
+			const kirimDelegasi = async (pihak, jenis_pihak) => {
+				Swal.fire({
+					icon: 'question',
+					title: 'Instrumen Panggilan Luar',
+					text: 'Buat instrumen untuk delegasi ?',
+					inputAttributes: {
+						autocapitalize: 'on'
+					},
+					showCancelButton: true,
+					confirmButtonText: 'Buat',
+				}).then((result) => {
+					if (result.isConfirmed) {
+						instrumenValue.jenis_pihak = jenis_pihak
+						instrumenValue.pihak = pihak.nama
+						instrumenValue.pihak_id = pihak.pihak_id
+						instrumenValue.alamat_pihak = pihak.alamat
+						instrumenValue.jurusita_nama = 'Kordinator Delegasi'
+						instrumenValue.jurusita_id = 0
+						saveInstrumen()
+					}
+				})
+
+			}
+
 			const findRadius = async (alamat) => {
 				const radiusRequest = await fetch(base_url + 'radius').then(res => res.json())
 				if (radiusRequest) {
@@ -314,7 +338,8 @@
 				dataApi,
 				kirimInstrumen,
 				handlePIP,
-				handleSidang
+				handleSidang,
+				kirimDelegasi
 			}
 
 		}

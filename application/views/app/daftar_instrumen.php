@@ -226,9 +226,6 @@
 		},
 		setup(props, context) {
 			const refTable = ref(null)
-			onMounted(() => {
-				const dataTable = new simpleDatatables.DataTable(refTable)
-			})
 
 			function toFullDate(date) {
 				return moment(date, 'YYYY/MM/DD').locale('id').format('dddd LL')
