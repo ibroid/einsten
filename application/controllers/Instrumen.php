@@ -61,9 +61,9 @@ class Instrumen extends CI_Controller
                 $data = Instrumens::whereDate('instrumen.created_at', carbon()->now())->where('jurusita_id', auth()->user->profile_id)->get();
                 break;
             case '6':
-                $data = Instrumens::select('instrumen.*', 'sipppaju_backup.perkara_pelaksanaan_relaas.doc_relaas')->leftJoin('sipppaju_backup.perkara_pelaksanaan_relaas', function ($join) {
-                    $join->on('instrumen.sidang_id', '=', 'sipppaju_backup.perkara_pelaksanaan_relaas.sidang_id');
-                    $join->on('instrumen.pihak_id', '=', 'sipppaju_backup.perkara_pelaksanaan_relaas.pihak_id');
+                $data = Instrumens::select('instrumen.*', 'sipppaju.perkara_pelaksanaan_relaas.doc_relaas')->leftJoin('sipppaju.perkara_pelaksanaan_relaas', function ($join) {
+                    $join->on('instrumen.sidang_id', '=', 'sipppaju.perkara_pelaksanaan_relaas.sidang_id');
+                    $join->on('instrumen.pihak_id', '=', 'sipppaju.perkara_pelaksanaan_relaas.pihak_id');
                 })->whereDate('instrumen.created_at', carbon()->now())->where('instrumen.created_by', auth()->user->id)->orderBy('instrumen.created_at', 'DESC')->get();
                 break;
         }
@@ -71,9 +71,9 @@ class Instrumen extends CI_Controller
     }
     public function by_date()
     {
-        $data = Instrumens::select('instrumen.*', 'sipppaju_backup.perkara_pelaksanaan_relaas.doc_relaas')->leftJoin('sipppaju_backup.perkara_pelaksanaan_relaas', function ($join) {
-            $join->on('instrumen.sidang_id', '=', 'sipppaju_backup.perkara_pelaksanaan_relaas.sidang_id');
-            $join->on('instrumen.pihak_id', '=', 'sipppaju_backup.perkara_pelaksanaan_relaas.pihak_id');
+        $data = Instrumens::select('instrumen.*', 'sipppaju.perkara_pelaksanaan_relaas.doc_relaas')->leftJoin('sipppaju.perkara_pelaksanaan_relaas', function ($join) {
+            $join->on('instrumen.sidang_id', '=', 'sipppaju.perkara_pelaksanaan_relaas.sidang_id');
+            $join->on('instrumen.pihak_id', '=', 'sipppaju.perkara_pelaksanaan_relaas.pihak_id');
         })->whereDate('tanggal_sidang', request('date'))->where('created_by', auth()->user->id)->get();
         echo json_encode($data);
     }
@@ -125,9 +125,9 @@ class Instrumen extends CI_Controller
     }
     function ruang_sidang($ruang_id)
     {
-        if ($ruang_id === 1) {
+        if ($ruang_id == 1) {
             return 'Umar Bin Khatab';
-        } else if ($ruang_id === 2) {
+        } else if ($ruang_id == 2) {
             return 'Abu Musa';
         } else {
             return 'Asyuraih';
