@@ -96,8 +96,8 @@ class CI_Controller
 
 		$capsule->addConnection([
 			'driver' => 'mysql',
-			'host' => '192.168.0.212',
-			'database' => 'sipppaju_backup',
+			'host' => '192.168.0.222',
+			'database' => 'sipppaju',
 			'username' => 'einsten',
 			'password' => 'einsten123',
 			'charset' => 'utf8',
@@ -107,7 +107,7 @@ class CI_Controller
 
 		$capsule->addConnection([
 			'driver' => 'mysql',
-			'host' => '192.168.0.212',
+			'host' => '192.168.0.222',
 			'database' => 'einsten',
 			'username' => 'einsten',
 			'password' => 'einsten123',

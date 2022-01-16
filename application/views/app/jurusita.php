@@ -58,7 +58,6 @@
 											<th>
 												<input id="listperkara" placeholder="Nomor Perkara" type="text" class="form-control" v-model="searchValue.nomor_perkara">
 												<datalist id="listperkara">
-													<option-perkara></option-perkara>
 												</datalist>
 											</th>
 											<th>
@@ -100,7 +99,8 @@
 		createApp,
 		reactive,
 		onMounted,
-		ref
+		ref,
+		watchEffect
 	} = Vue;
 	const base_url = "<?= base_url() ?>"
 	const init = {
@@ -155,6 +155,10 @@
 				}
 			}
 
+			const watchNomorPerkara = watchEffect(() => {
+				console.log(searchValue.nomor_perkara)
+			})
+
 			return {
 				fetchToday,
 				dataApi,
@@ -163,7 +167,8 @@
 				filtername,
 				cari_berdasarkan_tgl_diterima,
 				cari_berdasarkan_tgl_sidang,
-				cari_berdasarkan_nomor_perkara
+				cari_berdasarkan_nomor_perkara,
+				watchNomorPerkara
 			}
 		}
 	}
