@@ -48,8 +48,13 @@ class Instrumen extends CI_Controller
         if ($js) {
             notifToJurusita([
                 'number' => $js->keterangan,
-                'text' => "*INSTRUMEN PANGGILAN BARU*
-                \n$data->nomor_perkara\n$data->pihak\n$data->alamat_pihak\n$jenispihak\n$data->alamat_pihak\nTanggal Sidang:$tglsidang"
+                'text' => "*INSTRUMEN BARU*\n\n
+                Jenis Panggilan: $data->jenis_panggilan\n\n
+                Nomor Perkara : $data->nomor_perkara\n\n
+                Pihak : $data->pihak\n\n
+                Alamat: $data->alamat_pihak\n\n
+                Jenis Pihak : $jenispihak\n\n
+                Tanggal Sidang/Putus:$tglsidang"
             ]);
         }
     }
@@ -202,5 +207,19 @@ class Instrumen extends CI_Controller
             $data = Instrumens::whereDate('tanggal_sidang', request('tanggal_sidang'))->where('jurusita_id', auth()->user->profile_id)->orderBy('created_at', 'DESC')->get();
             echo json_encode($data);
         }
+    }
+    public function amplop($id)
+    {
+        $data = Instrumens::find($id);
+        $perkara = $this->capsule->table('perkara')->where('perkara_id', $data->perkara_id)->first();
+        $templatedocx =  new \PhpOffice\PhpWord\TemplateProcessor(FCPATH .  'relaas/template_amplop.docx');;
+        $templatedocx->setValue('nomor_perkara', $data->nomor_perkara);
+        $templatedocx->setValue('tanggal_sidang', carbon()->parse($perkara->tanggal_sidang)->isoFormat('D MMMM Y'));
+        $templatedocx->setValue('jenis_perkara', $perkara->jenis_perkara_text);
+        $templatedocx->setValue('nama_pihak', $data->pihak);
+        $templatedocx->setValue('alamat_pihak', $data->alamat_pihak);
+        $filename = 'AMPLOP_P' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
+        $templatedocx->saveAs(FCPATH . 'hasil/' . $filename);
+        redirect('hasil/' . $filename);
     }
 }

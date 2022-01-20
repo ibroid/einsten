@@ -197,9 +197,11 @@
 						<td>
 							<p v-if="ins.biaya"> {{ins.biaya}}</p>
 							<button v-else class="btn btn-sm btn-success">Isi Biaya</button>
-            </td>
-            <td>
+						</td>
+						<td>
 							<a target="_blank" :href="base_url + 'instrumen/cetak/' + ins.id" class="btn btn-sm btn-danger"><i class="bi bi-file-earmark-font"></i>
+							</a>
+							<a target="_blank" :href="base_url + 'instrumen/amplop/' + ins.id" class="btn btn-sm btn-success"><i class="bi bi-envelope"></i>
 							</a>
 						</td>
 					</tr>
