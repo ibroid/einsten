@@ -3,6 +3,8 @@
 require_once FCPATH . 'vendor/autoload.php';
 require_once APPPATH . 'models/Instrumens.php';
 require_once APPPATH . 'models/Jurusita.php';
+require_once APPPATH . 'models/Qrcodes.php';
+include_once APPPATH . 'third_party/phpqrcode/qrlib.php';
 class Instrumen extends CI_Controller
 {
     function __construct()
@@ -219,6 +221,37 @@ class Instrumen extends CI_Controller
         $templatedocx->setValue('nama_pihak', $data->pihak);
         $templatedocx->setValue('alamat_pihak', $data->alamat_pihak);
         $filename = 'AMPLOP_P' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
+        $templatedocx->saveAs(FCPATH . 'hasil/' . $filename);
+        redirect('hasil/' . $filename);
+    }
+    public function kwitansi($id)
+    {
+        $data = Instrumens::find($id);
+        $perkara = $this->capsule->table('perkara')->where('perkara_id', $data->perkara_id)->first();
+        $jurusita = $this->capsule->table('jurusita')->where('id', $data->jurusita_id)->first();
+        $templatedocx =  new \PhpOffice\PhpWord\TemplateProcessor(FCPATH .  'relaas/template_kwitansi.docx');
+
+        $templatedocx->setValue('nomor_perkara', $data->nomor_perkara);
+        $templatedocx->setValue('tanggal_sidang', carbon()->parse($data->tanggal_sidang)->isoFormat('D MMMM Y'));
+        $templatedocx->setValue('jenis_perkara', $perkara->jenis_perkara_text);
+        $templatedocx->setValue('nama_pihak', $data->pihak);
+        $templatedocx->setValue('nama_p', $perkara->pihak1_text);
+        $templatedocx->setValue('nama_t', $perkara->pihak2_text);
+
+        $qrcodedata = Qrcodes::create([
+            'instrumen_id' => $data->id,
+            'qrcode' => generateRandomString()
+        ]);
+        QRcode::png($qrcodedata->qrcode, FCPATH . 'hasil/qrcode.png');
+
+        $templatedocx->setImageValue('barcode', FCPATH . 'hasil/qrcode.png');
+        $templatedocx->setValue('jumlah_terbilang', terbilang($data->biaya));
+        $templatedocx->setValue('untuk_biaya', $data->jenis_panggilan);
+        $templatedocx->setValue('hari_tanggal_sekarang', carbon()->parse(date('Y-m-d'))->isoFormat('dddd, D MMMM Y'));
+        $templatedocx->setValue('jenis_jurusita', $this->jenis_jurusita($jurusita->jabatan));
+        $templatedocx->setValue('nama_jurusita', $jurusita->nama_gelar);
+
+        $filename = 'KWITANSI_P' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
         $templatedocx->saveAs(FCPATH . 'hasil/' . $filename);
         redirect('hasil/' . $filename);
     }
