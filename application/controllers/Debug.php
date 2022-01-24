@@ -5,7 +5,8 @@ class Debug extends CI_Controller
 {
     public function index()
     {
-        echo password_hash('089636811489', PASSWORD_DEFAULT);
+        // echo password_hash('089636811489', PASSWORD_DEFAULT);
+        echo generateRandomString();
     }
 
     public function create_user_pp()

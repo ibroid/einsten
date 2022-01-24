@@ -203,6 +203,8 @@
 							</a>
 							<a target="_blank" :href="base_url + 'instrumen/amplop/' + ins.id" class="btn btn-sm btn-success"><i class="bi bi-envelope"></i>
 							</a>
+							<a target="_blank" :href="base_url + 'instrumen/kwitansi/' + ins.id" class="btn btn-sm btn-warning"><i class="bi bi-cash"></i>
+							</a>
 						</td>
 					</tr>
 					<tr v-else>
