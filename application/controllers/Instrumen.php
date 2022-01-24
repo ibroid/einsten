@@ -123,7 +123,7 @@ class Instrumen extends CI_Controller
             ));
             $pathToSave = FCPATH . 'hasil/' . $filename;
             $template->saveAs($pathToSave);
-            redirect('hasil/' . $filename);
+           redirect('hasil/' . $filename);
         } else {
             echo 'Data tidak ada';
         }
