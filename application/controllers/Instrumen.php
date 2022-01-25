@@ -104,9 +104,8 @@ class Instrumen extends CI_Controller
                     $templatedocx = 'relaas/relaas_lanjutan.docx';
                     $filename = 'SIDANG_LANJUTAN_' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
                     break;
-
                 default:
-                    # code...
+
                     break;
             }
 
@@ -250,6 +249,7 @@ class Instrumen extends CI_Controller
         $templatedocx->setValue('hari_tanggal_sekarang', carbon()->parse(date('Y-m-d'))->isoFormat('dddd, D MMMM Y'));
         $templatedocx->setValue('jenis_jurusita', $this->jenis_jurusita($jurusita->jabatan));
         $templatedocx->setValue('nama_jurusita', $jurusita->nama_gelar);
+        $templatedocx->setValue('jenis_pihak', $this->jenis_pihak($data->jenis_pihak));
 
         $filename = 'KWITANSI_P' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
         $templatedocx->saveAs(FCPATH . 'hasil/' . $filename);
