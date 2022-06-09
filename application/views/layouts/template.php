@@ -67,6 +67,28 @@
                                     </div>
                                 </li>
                             <?php } ?>
+                            <?php if (isset(auth()->kasir)) { ?>
+                                <li class="menu-item has-sub">
+                                    <a href="#" class='menu-link'>
+                                        <i class="bi bi-cash"></i>
+                                        <span>Keuangan</span>
+                                    </a>
+                                    <div class="submenu ">
+                                        <div class="submenu-group-wrapper">
+                                            <ul class="submenu-group">
+                                                <li class="submenu-item  ">
+                                                    <a href="<?= base_url('pencairan') ?>" class='submenu-link'>Pencairan</a>
+                                                </li>
+                                                <li class="submenu-item  ">
+                                                    <a href="<?= base_url('app/daftar') ?>" class='submenu-link'>
+                                                        Potongan
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php } ?>
                             <li class="menu-item">
                                 <a href="#" class='menu-link'>
                                     <i class="bi bi-gear"></i>

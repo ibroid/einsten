@@ -167,7 +167,7 @@
 		setup() {
 			const searchValue = reactive({
 				byTanggalSidang: '',
-				byNomorPerkara: '',
+				byNomorPerkara: '/Pdt.G/2022/PA.JU',
 				byJurusita: '',
 				byJenisPanggilan: '',
 			});

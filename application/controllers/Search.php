@@ -1,6 +1,7 @@
 <?php
 
 require_once APPPATH . 'models/Perkara.php';
+require_once APPPATH . 'models/Jurusita.php';
 
 class Search extends CI_Controller
 {
@@ -14,5 +15,19 @@ class Search extends CI_Controller
 
             echo json_encode($data);
         }
+    }
+    public function jurusita($id = '')
+    {
+        if ($id) {
+        } else {
+            echo json_encode(Jurusita::with(['instrumen' => function ($qry) {
+                $qry->whereDate('created_at', carbon()->now());
+            }])->where('aktif', 'Y')->get());
+        }
+    }
+    public function potongan()
+    {
+        $potongan = $this->capsule->connection('local')->table('potongan')->get();
+        echo json_encode($potongan);
     }
 }

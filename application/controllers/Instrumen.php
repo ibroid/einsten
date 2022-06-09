@@ -44,6 +44,7 @@ class Instrumen extends CI_Controller
 
     public function notifJs($data)
     {
+        $this->load->helper('notif');
         $tglsidang = carbon()->parse($data->tanggal_sidang)->isoFormat('dddd, D MMMM Y');
         $jenispihak = $this->jenis_pihak($data->jenis_pihak);
         $js = Jurusita::find($data->jurusita_id);
@@ -104,9 +105,8 @@ class Instrumen extends CI_Controller
                     $templatedocx = 'relaas/relaas_lanjutan.docx';
                     $filename = 'SIDANG_LANJUTAN_' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
                     break;
-
                 default:
-                    # code...
+
                     break;
             }
 
@@ -125,7 +125,7 @@ class Instrumen extends CI_Controller
             ));
             $pathToSave = FCPATH . 'hasil/' . $filename;
             $template->saveAs($pathToSave);
-           redirect('hasil/' . $filename);
+            redirect('hasil/' . $filename);
         } else {
             echo 'Data tidak ada';
         }
@@ -250,6 +250,7 @@ class Instrumen extends CI_Controller
         $templatedocx->setValue('hari_tanggal_sekarang', carbon()->parse(date('Y-m-d'))->isoFormat('dddd, D MMMM Y'));
         $templatedocx->setValue('jenis_jurusita', $this->jenis_jurusita($jurusita->jabatan));
         $templatedocx->setValue('nama_jurusita', $jurusita->nama_gelar);
+        $templatedocx->setValue('jenis_pihak', $this->jenis_pihak($data->jenis_pihak));
 
         $filename = 'KWITANSI_P' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
         $templatedocx->saveAs(FCPATH . 'hasil/' . $filename);
