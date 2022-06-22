@@ -54,6 +54,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 require_once FCPATH . 'vendor/autoload.php';
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Carbon\Carbon;
 
 class CI_Controller
 {
@@ -121,6 +122,8 @@ class CI_Controller
 		$capsule->bootEloquent();
 
 		$this->capsule = $capsule;
+
+		Carbon::setLocale('id');
 	}
 
 	// --------------------------------------------------------------------

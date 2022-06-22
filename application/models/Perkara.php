@@ -5,6 +5,8 @@ require_once APPPATH . 'models/PihakSatu.php';
 require_once APPPATH . 'models/PihakDua.php';
 require_once APPPATH . 'models/PerkaraJurusita.php';
 require_once APPPATH . 'models/PerkaraPutusan.php';
+require_once APPPATH . 'models/PerkaraPanitera.php';
+
 class Perkara extends Illuminate\Database\Eloquent\Model
 {
     protected $table = 'perkara';
@@ -28,5 +30,9 @@ class Perkara extends Illuminate\Database\Eloquent\Model
     public function putusan()
     {
         return $this->hasOne(PerkaraPutusan::class, 'perkara_id', 'perkara_id');
+    }
+    public function panitera()
+    {
+        return $this->hasOne(PerkaraPanitera::class, 'perkara_id', 'perkara_id');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once APPPATH . 'models/Perkara.php';
+require_once APPPATH . 'models/Instrumens.php';
 
 class JadwalSidang extends Illuminate\Database\Eloquent\Model
 {
@@ -8,6 +9,11 @@ class JadwalSidang extends Illuminate\Database\Eloquent\Model
 
     public function perkara()
     {
-        $this->belongsTo(Perkara::class, 'perkara_id', 'perkara_id');
+        return $this->belongsTo(Perkara::class, 'perkara_id', 'perkara_id');
+    }
+
+    public function instrumen()
+    {
+        return $this->setConnection('local')->hasOne(Instrumens::class, 'sidang_id', 'id');
     }
 }

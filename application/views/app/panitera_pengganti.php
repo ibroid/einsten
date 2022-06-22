@@ -216,13 +216,19 @@
 				const inputOption = {}
 				dataApi.jurusita.forEach(row => {
 					inputOption[row.jurusita_id] = row.jurusita_nama
-				})
+				});
+				const inputOptions = new Promise((resolve) => {
+					setTimeout(() => {
+						resolve(inputOption)
+					}, 1000)
+				});
+
 				const {
 					value: jurusita
 				} = await Swal.fire({
 					title: 'Pilih Jurusita',
-					input: 'select',
-					inputOptions: inputOption,
+					input: 'radio',
+					inputOptions: inputOptions,
 					inputPlaceholder: 'Pilih Jurusita',
 					showCancelButton: true,
 					inputValidator: (value) => {
@@ -326,7 +332,11 @@
 						confirmButtonText: 'Buat lagi'
 					}).then(result => (!result.isConfirmed) ? location.href = base_url + 'app/daftar' : false);
 				} catch (error) {
-
+					Swal.fire({
+						title: 'Error',
+						text: error,
+						icon: 'error'
+					})
 				}
 			}
 

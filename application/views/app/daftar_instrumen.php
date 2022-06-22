@@ -46,7 +46,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<component :is="bodyModal"></component>
+								<table-filter @search_by_ceated="fetchByCreated" @search_by_jurusita="fetchByJurusita" @search_by_perkara="fetchByPerkara"></table-filter>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -84,7 +84,6 @@
 
 	const init = {
 		setup() {
-			const bodyModal = ref('table-filter');
 			const dataApi = reactive({});
 			const searchValue = reactive({
 				byTanggalSidang: '',
@@ -118,6 +117,41 @@
 				Swal.close()
 			}
 
+			const fetchByPerkara = async (nomorPerkara) => {
+				showLoading()
+				const body = new FormData()
+				body.append('nomor_perkara', nomorPerkara);
+				const dateRequest = await fetch(base_url + 'instrumen/by_perkara', {
+					method: 'POST',
+					body: body
+				}).then(res => res.json())
+				dataApi.instrumen = dateRequest
+				Swal.close()
+			}
+
+			const fetchByJurusita = async (jurusitaId) => {
+				showLoading()
+				const body = new FormData()
+				body.append('jurusita_id', jurusitaId);
+				const dateRequest = await fetch(base_url + 'instrumen/by_jurusita', {
+					method: 'POST',
+					body: body
+				}).then(res => res.json())
+				dataApi.instrumen = dateRequest
+				Swal.close()
+			}
+			const fetchByCreated = async (tanggalDibuat) => {
+				showLoading()
+				const body = new FormData()
+				body.append('tanggal_dibuat', tanggalDibuat);
+				const dateRequest = await fetch(base_url + 'instrumen/by_created', {
+					method: 'POST',
+					body: body
+				}).then(res => res.json())
+				dataApi.instrumen = dateRequest
+				Swal.close()
+			}
+
 			onMounted(() => fetchToday());
 			return {
 				dataApi,
@@ -125,7 +159,9 @@
 				searchValue,
 				fetchByDate,
 				refModal,
-				bodyModal,
+				fetchByPerkara,
+				fetchByJurusita,
+				fetchByCreated,
 				handleFindRelaas
 			}
 		}
@@ -139,7 +175,7 @@
 				<thead>
 					<tr>
 						<th><input v-model="searchValue.byNomorPerkara" type="text" placeholder="Nomor Perkara" class="form-control"></th>
-						<th><button class="btn btn-success btn-sm">Cari Berdasarkan Nomor Perkara</button></th>
+						<th><button v-on:click="findByPerkara()" class="btn btn-success btn-sm">Cari Berdasarkan Nomor Perkara</button></th>
 					</tr>
 					<tr>
 						<th>
@@ -149,31 +185,43 @@
 								<?php } ?>
 							</select>
 						</th>
-						<th><button class="btn btn-success btn-sm">Cari Berdasarkan Jurusita</button></th>
+						<th><button v-on:click="findByJurusita()" class="btn btn-success btn-sm">Cari Berdasarkan Jurusita</button></th>
 					</tr>
 					<tr>
 						<th>
-							<select v-model="searchValue.byJenisPanggilan" class="form-control">
-								<option selected>Panggilan Sidang Pertama</option>
-								<option>Panggilan Sidang Lanjutan</option>
-								<option>Panggilan Sidang Ikrar</option>
-								<option>Panggilan Pemberitahuan Isi Putusan </option>
-							</select>
+						<input type="date" v-model="searchValue.byTanggalBuat" class="form-control">
 						</th>
-						<th><button class="btn btn-success btn-sm">Cari Berdasarkan Jenis Panggilan</button></th>
+						<th><button v-on:click="findByCreated()" class="btn btn-success btn-sm">Cari Berdasarkan Tanggal Dibuat</button></th>
 					</tr>
 				</thead>
+				<a href="<?= base_url('instrumen/semua') ?>" class="btn btn-dark btn">Tampilkan Semua Instrumen Yang Dibuat</a>
 			</table>`,
-		setup() {
+		setup(prop, context) {
 			const searchValue = reactive({
 				byTanggalSidang: '',
 				byNomorPerkara: '/Pdt.G/2022/PA.JU',
 				byJurusita: '',
 				byJenisPanggilan: '',
+				byTanggalBuat: ''
 			});
 
+			const findByPerkara = () => {
+				context.emit('search_by_perkara', searchValue.byNomorPerkara)
+			}
+
+			const findByJurusita = () => {
+				context.emit('search_by_jurusita', searchValue.byJurusita)
+			}
+
+			const findByCreated = () => {
+				context.emit('search_by_ceated', searchValue.byTanggalBuat)
+			}
+
 			return {
-				searchValue
+				searchValue,
+				findByPerkara,
+				findByJurusita,
+				findByCreated
 			}
 
 		}
@@ -214,7 +262,7 @@
 						</td>
 					</tr>
 					<tr v-else>
-						<td colspan="7" class="text-center">Tidak Ada Data</td>
+						<td colspan="8" class="text-center">Tidak Ada Data</td>
 					</tr>
 				</tbody>
 			</table>`,
