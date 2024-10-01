@@ -97,10 +97,10 @@ class CI_Controller
 
 		$capsule->addConnection([
 			'driver' => 'mysql',
-			'host' => '192.168.0.222',
-			'database' => 'sipppaju',
+			'host' => '25.24.23.7',
+			'database' => 'sipp',
 			'username' => 'einsten',
-			'password' => 'einsten123',
+			'password' => 'burungkutilang',
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
@@ -108,10 +108,10 @@ class CI_Controller
 
 		$capsule->addConnection([
 			'driver' => 'mysql',
-			'host' => '192.168.0.222',
+			'host' => '25.24.23.7',
 			'database' => 'einsten',
 			'username' => 'einsten',
-			'password' => 'einsten123',
+			'password' => 'burungkutilang',
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',

@@ -25,6 +25,12 @@
 									</tr>
 								<?php } ?>
 							</tbody>
+							<thead>
+								<tr>
+									<th colspan="2" class="text-end">Total Instrumen Dibuat</th>
+									<th><?= $total ?></th>
+								</tr>
+							</thead>
 
 						</table>
 					</div>

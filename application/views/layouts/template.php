@@ -145,7 +145,7 @@
 							<p>2021 &copy; PAJU</p>
 						</div>
 						<div class="float-end">
-							<p>Created with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="http://pa-jakartautara.go.id">Maliki</a></p>
+							<p>Created with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="https://mmaliki.my.id">Maliki</a></p>
 						</div>
 					</div>
 				</div>

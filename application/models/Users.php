@@ -5,6 +5,7 @@ class Users extends Illuminate\Database\Eloquent\Model
 {
     protected $table = 'users';
     protected $connection = 'local';
+    protected $guarded = [];
 
     public function instrumen()
     {

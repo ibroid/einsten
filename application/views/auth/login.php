@@ -3,7 +3,7 @@
 </div>
 <h1 class="auth-title">Log in.</h1>
 <p class="auth-subtitle ">Selamat Datang di Aplikasi EINSTEN.</p>
-<p>E-Instrumen Pengadilan Agama Jakarta Utara</p>
+<p>E-Instrumen Pengadilan Agama Jakarta Timur</p>
 
 <div id="vue">
 	<div class="form-group position-relative has-icon-left mb-4">
@@ -22,6 +22,10 @@
 		<i class="bi bi-plus"></i>
 		Log in
 	</button>
+	<center>
+		<hr>
+		<a href="<?= base_url('/register') ?>">Register</a>
+	</center>
 </div>
 <script src="<?= base_url('assets/js/vue/dist/vue.global.js') ?>"></script>
 <script>

@@ -7,6 +7,20 @@
 		<h3>Buat Instrumen</h3>
 	</div>
 	<div class="page-content">
+		<!-- <div class="alert alert-danger">
+			<h3>Perhatian</h3>
+			<img src="<?= base_url('assets/Screenshot 2022-07-13 101802.png') ?>" alt="">
+			<ul>
+				<li>
+					<p class="text-white">Gunakan Tombol Hijau <button class="btn btn-sm btn-success">Kirim Instrumen</button> Untuk Mengirim Instrumen Ke Radius Dalam</p>
+				</li>
+				<li>
+					<p class="text-white">Gunakan Tombol Merah <button class="btn btn-sm btn-danger">Kirim Delegasi</button> Untuk Mengirim Instrumen Ke Radius Luar (Delegasi/Bang Salam)</p>
+
+				</li>
+			</ul>
+			<p>Terima Kasih</p>
+		</div> -->
 		<div id="vue">
 			<section class="section">
 				<div class="card">

@@ -25,7 +25,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 $root  = "http://" . $_SERVER['HTTP_HOST'];
 $root .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
-$config['base_url']    = $root;
+// $config['base_url']    = 'https://einsten.pajakartautara.id';
 
 /*
 |--------------------------------------------------------------------------
@@ -118,7 +118,7 @@ $config['enable_hooks'] = FALSE;
 | https://codeigniter.com/userguide3/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'MY_';
+$config['subclass_prefix'] = 'G_';
 
 /*
 |--------------------------------------------------------------------------
