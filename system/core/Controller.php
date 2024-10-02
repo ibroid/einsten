@@ -51,10 +51,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @link		https://codeigniter.com/userguide3/general/controllers.html
  */
 
-require_once FCPATH . 'vendor/autoload.php';
-
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Carbon\Carbon;
 
 class CI_Controller
 {
@@ -92,38 +88,6 @@ class CI_Controller
 		$this->load = &load_class('Loader', 'core');
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');
-
-		$capsule = new Capsule;
-
-		$capsule->addConnection([
-			'driver' => 'mysql',
-			'host' => '25.24.23.7',
-			'database' => 'sipp',
-			'username' => 'einsten',
-			'password' => 'burungkutilang',
-			'charset' => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix' => '',
-		]);
-
-		$capsule->addConnection([
-			'driver' => 'mysql',
-			'host' => '25.24.23.7',
-			'database' => 'einsten',
-			'username' => 'einsten',
-			'password' => 'burungkutilang',
-			'charset' => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix' => '',
-		], 'local');
-
-		$capsule->setAsGlobal();
-
-		$capsule->bootEloquent();
-
-		$this->capsule = $capsule;
-
-		Carbon::setLocale('id');
 	}
 
 	// --------------------------------------------------------------------

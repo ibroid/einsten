@@ -20,7 +20,7 @@
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
-                    <?= $contents ?>
+                    <?= $content ?>
                 </div>
             </div>
             <div class="col-lg-7 d-none d-lg-block">

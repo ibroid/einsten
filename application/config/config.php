@@ -23,9 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$root  = "http://" . $_SERVER['HTTP_HOST'];
-$root .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
-// $config['base_url']    = 'https://einsten.pajakartautara.id';
+$config['base_url'] = $_ENV["BASE_URL"];
 
 /*
 |--------------------------------------------------------------------------
@@ -140,7 +138,7 @@ $config['subclass_prefix'] = 'G_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FALSE;
+$config['composer_autoload'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
