@@ -18,6 +18,7 @@ class Login extends CI_Controller
     "Panmud Hukum" => "/panitera",
     "Jurusita" => "/jurusita",
     "Kasir" => "/kasir",
+    "Koordinator Delegasi" => "/delegasi",
     "Super Administrator" => "/admin"
   ];
 
@@ -48,14 +49,30 @@ class Login extends CI_Controller
         throw new Exception("Password Salah");
       }
 
-      $profile = $this->setSession($user);
+      $profile = $this->findProfile($user);
+
       if (!isset($this->redirectPage[$profile->name])) {
-        throw new Exception("Password Salah");
+        throw new Exception("Akun anda tidak bisa digunakan");
+      }
+
+      $this->session->set_userdata("g_user_loged", $profile);
+
+      if (isset($this->input->request_headers()["Hx-Request"])) {
+        set_status_header(200);
+        header("HX-Redirect: " . $this->redirectPage[$profile->name]);
+        exit;
       }
 
       $this->response($this->redirectPage[$profile->name]);
     } catch (\Throwable $th) {
-      throw $th;
+      $message = $th->getMessage();
+      if (isset($this->input->request_headers()["Hx-Request"])) {
+        $message = $this->load->component("auth_alert", [
+          "message" => $th->getMessage()
+        ]);
+      }
+
+      $this->response($message);
     }
   }
 
@@ -77,7 +94,7 @@ class Login extends CI_Controller
     return $user;
   }
 
-  private function setSession($user)
+  private function findProfile($user)
   {
     $sipp =  $this->eloquent->capsule->connection("sipp");
     $user = $sipp->table('sys_users')
@@ -90,7 +107,6 @@ class Login extends CI_Controller
       ->leftJoin('user_jurusita', 'user_jurusita.userid', '=', 'sys_users.userid')
       ->where('sys_users.userid', $user->userid)->first();
 
-    $this->session->set_userdata('g_user_loged', $user);
     return $user;
   }
 }

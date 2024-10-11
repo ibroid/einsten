@@ -1,10 +1,5 @@
 <?php
 
-require_once FCPATH . 'vendor/autoload.php';
-require_once APPPATH . 'models/Instrumens.php';
-require_once APPPATH . 'models/Jurusita.php';
-require_once APPPATH . 'models/Qrcodes.php';
-include_once APPPATH . 'third_party/phpqrcode/qrlib.php';
 class Instrumen extends CI_Controller
 {
     function __construct()
@@ -16,22 +11,17 @@ class Instrumen extends CI_Controller
     {
         $data = Instrumens::firstOrCreate([
             'sidang_id' => request('sidang_id'),
-            'pihak' => request('pihak')
+            'pihak_id' => request('pihak_id'),
         ], [
             'jurusita_id' => request('jurusita_id'),
-            'jurusita_nama' => request('jurusita_nama'),
-            'tanggal_sidang' => request('tanggal_sidang'),
-            'nomor_perkara' => request('nomor_perkara'),
-            'alamat_pihak' => request('alamat_pihak'),
-            'agenda' => request('agenda'),
             'biaya' => request('biaya'),
             'perkara_id' => request('perkara_id'),
-            'pihak_id' => request('pihak_id'),
             'jenis_pihak' => request('jenis_pihak'),
             'jenis_panggilan' => request('jenis_panggilan'),
+            'tanggal_dibuat' => date("Y-m-d"),
             'created_by' => auth()->user->id
         ]);
-        $this->notifJs($data);
+        // $this->notifJs($data);
         echo json_encode($data);
     }
     function jenis_pihak($par)

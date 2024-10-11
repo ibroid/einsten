@@ -1,8 +1,6 @@
 <?php
 
-require_once APPPATH . 'models/Perkara.php';
-require_once APPPATH . 'models/Instrumens.php';
-class Panitera extends Illuminate\Database\Eloquent\Model
+class PaniteraPN extends Illuminate\Database\Eloquent\Model
 {
     protected $table = 'panitera_pn';
 

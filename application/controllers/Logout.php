@@ -4,7 +4,7 @@ class Logout extends CI_Controller
 {
   public function index()
   {
-    if ($this->session->method() != "post") {
+    if ($this->input->method() != "post") {
       show_404();
       exit;
     }

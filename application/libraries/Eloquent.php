@@ -10,7 +10,6 @@ class Eloquent
 
   public function init()
   {
-
     $capsule = new Capsule;
 
     $capsule->addConnection([

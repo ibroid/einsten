@@ -4,7 +4,7 @@ trait HttpResponse
 {
   public function response($data)
   {
-    if (isset($_SERVER['HX-Request'])) {
+    if (isset($_SERVER['HTTP_HX_REQUEST'])) {
       set_status_header(200);
       echo $data;
       return;

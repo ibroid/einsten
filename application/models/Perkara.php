@@ -1,14 +1,8 @@
 <?php
-require_once FCPATH . 'vendor/autoload.php';
-require_once APPPATH . 'models/JadwalSidang.php';
-require_once APPPATH . 'models/PihakSatu.php';
-require_once APPPATH . 'models/PihakDua.php';
-require_once APPPATH . 'models/PerkaraJurusita.php';
-require_once APPPATH . 'models/PerkaraPutusan.php';
-require_once APPPATH . 'models/PerkaraPanitera.php';
 
 class Perkara extends Illuminate\Database\Eloquent\Model
 {
+    protected $connection = "sipp";
     protected $table = 'perkara';
 
     public function jadwal_sidang()

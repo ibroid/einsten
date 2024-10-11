@@ -9,7 +9,10 @@ class Auth extends CI_Controller
 
 	public function index()
 	{
-		$this->load->template("auth")->page("login");
+		$this->load->template("auth")->js_plugin([
+			base_url('assets/js/htmx.js'),
+			base_url('assets/js/jquery.slim.js'),
+		])->page("login");
 	}
 
 	public function login()
