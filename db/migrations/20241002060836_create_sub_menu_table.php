@@ -21,7 +21,7 @@ final class CreateSubMenuTable extends AbstractMigration
     {
         $table = $this->table("sub_menu");
         $table->addColumn("sub_menu_name", "string")
-            ->addColumn("menu_id", "string")
+            ->addColumn("menu_id", "integer")
             ->addColumn("link", "string")
             ->addColumn("created_at", "timestamp")
             ->addColumn("updated_at", "timestamp")

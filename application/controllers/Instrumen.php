@@ -1,6 +1,6 @@
 <?php
 
-class Instrumen extends CI_Controller
+class Instrumen extends G_Controller
 {
     function __construct()
     {
@@ -51,18 +51,25 @@ class Instrumen extends CI_Controller
 
     public function today()
     {
-        switch (auth()->user->level_id) {
-            case '7':
-                $data = Instrumens::whereDate('instrumen.created_at', carbon()->now())->where('jurusita_id', auth()->user->profile_id)->get();
-                break;
-            case '6':
-                $data = Instrumens::select('instrumen.*', 'sipp.perkara_pelaksanaan_relaas.doc_relaas')->leftJoin('sipp.perkara_pelaksanaan_relaas', function ($join) {
-                    $join->on('instrumen.sidang_id', '=', 'sipp.perkara_pelaksanaan_relaas.sidang_id');
-                    $join->on('instrumen.pihak_id', '=', 'sipp.perkara_pelaksanaan_relaas.pihak_id');
-                })->whereDate('instrumen.created_at', date('Y-m-d'))->where('instrumen.created_by', auth()->user->id)->orderBy('instrumen.created_at', 'DESC')->get();
-                break;
+        if (auth()->panitera_id !== null) {
+            $data = Instrumens::with("perkara")->with("jurusita")->with("pihak")
+                ->whereDate('instrumen.tanggal_dibuat', date('Y-m-d'))
+                ->where('instrumen.panitera_id', auth()->panitera_id)
+                ->orderBy('instrumen.created_at', 'DESC')
+                ->get();
+
+            header("Content-Type: application/json");
+            echo json_encode($data);
+            exit;
         }
-        echo json_encode($data);
+
+        if (auth()->jurusita_id !== null) {
+            $data = Instrumens::whereDate('instrumen.created_at', carbon()->now())->where('jurusita_id', auth()->user->profile_id)->get();
+
+            header("Content-Type: application/json");
+            echo json_encode($data);
+            exit;
+        }
     }
     public function by_date()
     {

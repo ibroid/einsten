@@ -21,14 +21,17 @@ final class CreateInstrumenTable extends AbstractMigration
     {
         $table = $this->table("instrumen");
         $table->addColumn("sidang_id", "integer")
+            ->addColumn("sidang_id_prev", "integer")
+            ->addColumn("panitera_id", "integer")
             ->addColumn("jurusita_id", "integer")
             ->addColumn("perkara_id", "integer")
             ->addColumn("pihak_id", "integer")
             ->addColumn("biaya", "string")
             ->addColumn("jenis_panggilan", "string")
             ->addColumn("jenis_pihak", "string")
+            ->addColumn("untuk_tanggal", "date")
             ->addColumn("kode_panggilan", "string")
-            ->addColumn("pencairan", "integer", ["length" => 1])
+            ->addColumn("pencairan", "integer", ["length" => 1, "default" => 0])
             ->addColumn("tanggal_dibuat", "date")
             ->addColumn("created_at", "timestamp")
             ->addColumn("updated_at", "timestamp")

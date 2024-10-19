@@ -41,12 +41,7 @@ class G_Controller extends CI_Controller
 
   public function get_user_menu()
   {
-    $accessableMenu = $this->eloquent->capsule
-      ->table("access_menu")
-      ->leftJoin("menu", "menu.id", "=", "access_menu.menu_id")
-      ->where("group_id", "=", $this->userdata->groupid)
-      ->get();
-
+    $accessableMenu = AccessableMenu::where("group_id", "=", $this->userdata->groupid)->get();
     return $accessableMenu;
   }
 }

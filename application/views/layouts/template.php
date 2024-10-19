@@ -30,15 +30,17 @@
 	<div id="app">
 		<div id="main" class="layout-horizontal">
 			<header class="mb-5">
-				<div class="header-top">
+				<div class="header-top" style="padding: 0 !important;">
 					<div class="container">
 						<div class="logo">
-							<a href="index.html"><img src="<?= base_url() ?>assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+							<a href="index.html">
+								<img src="<?= base_url($_ENV['LOGO']) ?>" alt="Logo" srcset="">
+							</a>
 						</div>
 						<div class="header-top-right">
-							<a href="#" class="burger-btn d-block d-xl-none">
-								<i class="bi bi-justify fs-3"></i>
-							</a>
+							<h6><?= $this->userdata->fullname ?>
+								| <small class="mt-0"><?= $this->userdata->name ?></small>
+							</h6>
 						</div>
 					</div>
 				</div>
@@ -52,11 +54,26 @@
 								</a>
 							</li>
 							<?php foreach ($menus as $m) { ?>
-								<li class="menu-item">
-									<a href="<?= base_url($m->link) ?>" class='menu-link'>
-										<i class="<?= $m->icon ?>"></i>
-										<span><?= $m->menu_name ?></span>
+								<li class="menu-item <?= $m->menu->is_sub ?>">
+									<a href="<?= !$m->menu->is_sub ? base_url($m->menu->link) : "javascript:void(0)" ?>" class='menu-link'>
+										<i class="<?= $m->menu->icon ?>"></i>
+										<span><?= $m->menu->menu_name ?></span>
 									</a>
+									<?php if ($m->menu->is_sub) { ?>
+										<div class="submenu ">
+											<div class="submenu-group-wrapper">
+												<ul class="submenu-group">
+													<?php foreach ($m->menu->sub_menu as $sub_menu) { ?>
+														<li class="submenu-item  ">
+															<a href="<?= base_url($sub_menu->link) ?>" class='submenu-link'>
+																<?= $sub_menu->sub_menu_name ?>
+															</a>
+														</li>
+													<?php } ?>
+												</ul>
+											</div>
+										</div>
+									<?php } ?>
 								</li>
 							<?php } ?>
 							<!-- <li class="menu-item has-sub">
@@ -129,13 +146,14 @@
 									<span>Setelan</span>
 								</a>
 							</li>
+							 -->
 							<li class="menu-item">
 								<form id="form--logout" action="<?= base_url('logout') ?>" method="post"></form>
-								<a onclick="$('#form--logout').submit()" href="javascript:void(0)" class='menu-link'>
+								<a onclick="document.querySelector('#form--logout').submit()" href="javascript:void(0)" class='menu-link'>
 									<i class="bi bi-door-open-fill"></i>
 									<span>Logout</span>
 								</a>
-							</li> -->
+							</li>
 						</ul>
 					</div>
 				</nav>

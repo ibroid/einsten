@@ -94,10 +94,115 @@
         </div>
       </section>
     </div>
+
+  </div>
+  <div class="page-heading">
+    <h3>Rekomendasi Dibuatkan Instrumen</h3>
+  </div>
+  <div class="page-content">
+    <section class="section">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-center">
+            <h5>Tabel Perkara Tundaan Sidang Hari Ini</h5>
+          </div>
+          <table id="table-suggest-one" class="table table-hover">
+            <thead>
+              <tr>
+                <th>Nomor Perkara</th>
+                <th>Para Pihak</th>
+                <th>Alasan Ditunda</th>
+                <th>Dihadiri Oleh</th>
+                <th>Ditunda Ke Tanggal</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody
+              id="tbody-tundaan-sidang"
+              hx-get="<?= base_url('instrumen_sidang/tbody_tundaan_sidang') ?>" hx-trigger="load, fetchTundaanSidang">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
+
+<div
+  class="modal fade"
+  id="modalId"
+  tabindex="-1"
+  data-bs-keyboard="false"
+  data-bs-backdrop="static"
+
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true">
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"
+    role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">
+          Form Buat Instrumen Tundaan Sidang
+        </h5>
+        <button
+          onclick="datePickerDestroy()"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body-formtundaan">
+        <div class="text-center">
+          <h2>Mohon Tunggu ... </h2>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          onclick="datePickerDestroy()"
+          type="button"
+          class="btn btn-dark"
+          data-bs-dismiss="modal">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <script>
+  var datePickerInstance;
+
+  document.addEventListener('refetchTundaanSidang', () => {
+    htmx.trigger("#tbody-tundaan-sidang", "fetchTundaanSidang")
+  })
+  document.addEventListener('datepickerInit', datePickerInit)
+  document.addEventListener('datatableInit', () => {
+    $('#table-suggest-one').DataTable();
+  })
+
+  function datePickerInit() {
+    datePickerInstance = flatpickr(".datepicker-swap");
+  }
+
+  function datePickerDestroy() {
+
+    if (datePickerInstance) {
+      datePickerInstance.destroy()
+    }
+  }
+
   window.addEventListener("load", function() {
+
+    $("#modalId").on('hide.bs.modal', () => {
+      $("#modal-body-formtundaan").html(` <div class="text-center"><h2>Mohon Tunggu ... </h2></div>`)
+    })
+
     myStorage = window.localStorage;
 
     function toFullDate(date) {

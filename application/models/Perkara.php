@@ -4,6 +4,7 @@ class Perkara extends Illuminate\Database\Eloquent\Model
 {
     protected $connection = "sipp";
     protected $table = 'perkara';
+    protected $primaryKey  = 'perkara_id';
 
     public function jadwal_sidang()
     {

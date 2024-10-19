@@ -21,6 +21,23 @@
     <?php foreach ($css_addons as $css) { ?>
         <link rel="stylesheet" href="<?= $css ?>">
     <?php }  ?>
+    <style>
+        .img-container {
+            font-family: arial;
+            font-size: 24px;
+            /* margin: 25px; */
+            width: 350px;
+            height: 200px;
+            position: relative;
+        }
+
+        .content-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -25px 0 0 -25px;
+        }
+    </style>
 
 </head>
 
@@ -35,7 +52,9 @@
             </div>
             <div class="col-lg-6 d-none d-lg-block">
                 <div id="auth-right">
-
+                    <div class="img-container">
+                        <img class="content-img" src="<?= base_url('static/login_img.png') ?>" alt="">
+                    </div>
                 </div>
             </div>
         </div>
