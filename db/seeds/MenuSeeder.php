@@ -59,6 +59,20 @@ class MenuSeeder extends AbstractSeed
                 "is_sub" => "has-sub",
                 "icon" => "bi bi-cash-coin"
             ],
+            [
+                "id" => 7,
+                "menu_name" => "Instrumen Diterima",
+                "link" => "/jurusita_jsp/instrumen_diterima",
+                "is_sub" => "has-sub",
+                "icon" => "bi bi-inbox"
+            ],
+            [
+                "id" => 8,
+                "menu_name" => "Radius Nasional",
+                "link" => "/radius_nasional",
+                "is_sub" => "has-sub",
+                "icon" => "bi bi-map"
+            ],
         ])
             ->saveData();
     }

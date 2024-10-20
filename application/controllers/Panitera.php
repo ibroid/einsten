@@ -2,6 +2,14 @@
 
 class Panitera extends G_Controller
 {
+  public function __construct()
+  {
+    parent::__construct();
+    if ($this->userdata->panitera_id == null) {
+      redirect('/');
+    }
+  }
+
   public function index()
   {
     $this->load

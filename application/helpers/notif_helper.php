@@ -4,6 +4,7 @@ function notifToJurusita($data)
 {
     $number = $data['number'];
     $text = $data['text'];
+    $client_name = "default";
     $ch = curl_init('http://127.0.0.1/wa/send_message');
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt(
@@ -13,7 +14,7 @@ function notifToJurusita($data)
         "{
             \"number\" : \"$number\",
             \"message\" : \"$text\",
-            \"client_name\" : "default",
+            \"client_name\" : $client_name,
         }"
     );
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

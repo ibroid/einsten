@@ -434,7 +434,7 @@
               text: 'Apa anda akan membuat instrumen lagi ??',
               showCancelButton: true,
               confirmButtonText: 'Buat lagi'
-            }).then(result => (!result.isConfirmed) ? location.href = base_url + 'app/daftar' : false);
+            }).then(result => (!result.isConfirmed) ? location.href = base_url + 'instrumen_sidang/daftar' : false);
           } catch (error) {
             Swal.fire({
               title: 'Error',

@@ -2,6 +2,7 @@
 
 class Instrumens extends Illuminate\Database\Eloquent\Model
 {
+    protected $connection = 'default';
     protected $table = 'instrumen';
     protected $guarded = [];
 

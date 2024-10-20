@@ -2,9 +2,13 @@
 
 class Instrumen extends G_Controller
 {
+    public InstrumenService $instrumenService;
+
     function __construct()
     {
         parent::__construct();
+        $this->load->service('InstrumenService', null, 'instrumenService');
+        $this->load->library('Eloquent');
     }
 
     public function index()
@@ -16,12 +20,14 @@ class Instrumen extends G_Controller
             'jurusita_id' => request('jurusita_id'),
             'biaya' => request('biaya'),
             'perkara_id' => request('perkara_id'),
-            'jenis_pihak' => request('jenis_pihak'),
+            'jenis_pihak' => request('jenis_pihak') == 1 ? 'P' : 'T',
             'jenis_panggilan' => request('jenis_panggilan'),
             'tanggal_dibuat' => date("Y-m-d"),
-            'created_by' => auth()->user->id
+            'panitera_id' => auth()->panitera_id,
+            'untuk_tanggal' => request("tanggal_sidang"),
+            'kode_panggilan' => $this->instrumenService->kode_panggilan(request('jenis_panggilan'))
         ]);
-        // $this->notifJs($data);
+
         echo json_encode($data);
     }
     function jenis_pihak($par)
@@ -64,7 +70,10 @@ class Instrumen extends G_Controller
         }
 
         if (auth()->jurusita_id !== null) {
-            $data = Instrumens::whereDate('instrumen.created_at', carbon()->now())->where('jurusita_id', auth()->user->profile_id)->get();
+            $data = Instrumens::with('perkara:perkara_id,nomor_perkara,jenis_perkara_nama')
+                ->with('pihak')
+                ->whereDate('instrumen.tanggal_dibuat', carbon()->now())
+                ->where('jurusita_id', auth()->jurusita_id)->get();
 
             header("Content-Type: application/json");
             echo json_encode($data);
@@ -81,14 +90,22 @@ class Instrumen extends G_Controller
     }
     public function delete()
     {
-        $data = Instrumens::find(request('id'));
-        $data->delete();
-        echo json_encode(TRUE);
+        try {
+            $this->instrumenService->hapus(request('id'));
+
+            echo json_encode([
+                'message' => "Berhasil dihapus"
+            ]);
+        } catch (\Throwable $th) {
+            echo json_encode([
+                'message' => 'Terjadi Kesalahan. ' . $th->getMessage()
+            ]);
+        }
     }
     public function cetak($id = '')
     {
         $data = Instrumens::find($id);
-        $sidang = $this->capsule->table('perkara_jadwal_sidang')->where('id', $data->sidang_id)->first();
+        $sidang = $this->eloquent->capsule->connection('sipp')->table('perkara_jadwal_sidang')->where('id', $data->sidang_id)->first();
         if ($data) {
             switch ($data->jenis_panggilan) {
                 case 'Sidang Pertama':
@@ -136,7 +153,7 @@ class Instrumen extends G_Controller
     }
     public function replace_data_pihak($pihakid)
     {
-        $pihak = $this->capsule->table('pihak')->where('id', $pihakid)->first();
+        $pihak = $this->eloquent->capsule->connection('sipp')->table('pihak')->where('id', $pihakid)->first();
         return [
             'nama_pihak' => $pihak->nama,
             'alamat_pihak' => $pihak->alamat,
@@ -162,7 +179,7 @@ class Instrumen extends G_Controller
     }
     public function replace_perkara($perkaraid)
     {
-        $perkara = $this->capsule->table('perkara')->where('perkara.perkara_id', $perkaraid)->first();
+        $perkara = $this->eloquent->capsule->connection('sipp')->table('perkara')->where('perkara.perkara_id', $perkaraid)->first();
         return [
             'nomor_perkara' => $perkara->nomor_perkara,
             'tanggal_instrumen' => carbon()->parse($perkara->tanggal_pendaftaran)->isoFormat('D MMMM Y'),
@@ -180,7 +197,7 @@ class Instrumen extends G_Controller
     }
     function replace_jurusita($jurusitaid)
     {
-        $jurusita = $this->capsule->table('jurusita')->where('id', $jurusitaid)->first();
+        $jurusita = $this->eloquent->capsule->connection('sipp')->table('jurusita')->where('id', $jurusitaid)->first();
         return [
             'nama_jurusita' => $jurusita->nama_gelar,
             'jenis_jurusita' => $this->jenis_jurusita($jurusita->jabatan)
@@ -196,18 +213,29 @@ class Instrumen extends G_Controller
     public function search()
     {
         if (isset($_POST['tanggal_diterima'])) {
-            $data = Instrumens::whereDate('created_at', request('tanggal_diterima'))->where('jurusita_id', auth()->user->profile_id)->orderBy('created_at', 'DESC')->get();
+            $data = Instrumens::with('perkara:perkara_id,nomor_perkara,jenis_perkara_nama')
+                ->with('pihak')->whereDate('tanggal_dibuat', request('tanggal_diterima'))->where('jurusita_id', auth()->jurusita_id)->orderBy('created_at', 'DESC')->get();
             echo json_encode($data);
         }
+
         if (isset($_POST['tanggal_sidang'])) {
-            $data = Instrumens::whereDate('tanggal_sidang', request('tanggal_sidang'))->where('jurusita_id', auth()->user->profile_id)->orderBy('created_at', 'DESC')->get();
+            $data = Instrumens::with('perkara:perkara_id,nomor_perkara,jenis_perkara_nama')
+                ->with('pihak')->whereDate('untuk_tanggal', request('tanggal_sidang'))->where('jurusita_id', auth()->jurusita_id)->orderBy('created_at', 'DESC')->get();
+            echo json_encode($data);
+        }
+
+        if (isset($_POST['nomor_perkara'])) {
+            $data = Instrumens::with(['perkara:perkara_id,nomor_perkara,jenis_perkara_nama' => function ($q) {
+                $q->where('nomor_perkara', request('nomor_perkara'));
+            }])
+                ->with('pihak')->whereDate('untuk_tanggal', request('tanggal_sidang'))->where('jurusita_id', auth()->jurusita_id)->orderBy('created_at', 'DESC')->get();
             echo json_encode($data);
         }
     }
     public function amplop($id)
     {
         $data = Instrumens::find($id);
-        $perkara = $this->capsule->table('perkara')->where('perkara_id', $data->perkara_id)->first();
+        $perkara = $this->eloquent->capsule->connection('sipp')->table('perkara')->where('perkara_id', $data->perkara_id)->first();
         $templatedocx =  new \PhpOffice\PhpWord\TemplateProcessor(FCPATH .  'relaas/template_amplop.docx');;
         $templatedocx->setValue('nomor_perkara', $data->nomor_perkara);
         $templatedocx->setValue('tanggal_sidang', carbon()->parse($perkara->tanggal_sidang)->isoFormat('D MMMM Y'));
@@ -221,8 +249,8 @@ class Instrumen extends G_Controller
     public function kwitansi($id)
     {
         $data = Instrumens::find($id);
-        $perkara = $this->capsule->table('perkara')->where('perkara_id', $data->perkara_id)->first();
-        $jurusita = $this->capsule->table('jurusita')->where('id', $data->jurusita_id)->first();
+        $perkara = $this->eloquent->capsule->connection('sipp')->table('perkara')->where('perkara_id', $data->perkara_id)->first();
+        $jurusita = $this->eloquent->capsule->connection('sipp')->table('jurusita')->where('id', $data->jurusita_id)->first();
         $templatedocx =  new \PhpOffice\PhpWord\TemplateProcessor(FCPATH .  'relaas/template_kwitansi.docx');
 
         $templatedocx->setValue('nomor_perkara', $data->nomor_perkara);
@@ -287,5 +315,20 @@ class Instrumen extends G_Controller
         template('template', 'app/semua_instrumen', [
             'data' => $data
         ]);
+    }
+
+    public function set_biaya()
+    {
+        G_Input::mustPost();
+        try {
+            Instrumens::where('id', request('id'))->update([
+                'biaya' => request('biaya')
+            ]);
+
+            echo json_encode(['message' => "Set Biaya ok"]);
+        } catch (\Throwable $th) {
+            set_status_header(400);
+            echo json_encode(['message' => $th->getMessage()]);
+        }
     }
 }

@@ -29,6 +29,12 @@ class SubMenuSeeder extends AbstractSeed
                 "link" => "/instrumen_sidang/daftar",
                 "sub_menu_name" => "Daftar Instrumen"
             ],
+            [
+                "id" => 2,
+                "menu_id" => 1,
+                "link" => "/instrumen_sidang/daftar",
+                "sub_menu_name" => "Daftar Instrumen"
+            ],
         ])
             ->saveData();
     }

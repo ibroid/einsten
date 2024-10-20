@@ -7,8 +7,8 @@
     hx-target="#root-notif">
     <input type="hidden" name="sidang_id" value="<?= $data['sidang_id'] ?>">
     <input type="hidden" name="perkara_id" value="<?= $data['perkara_id'] ?>">
-    <input type="hidden" name="jenis_panggilan" value="Panggilan Sidang Lanjutan">
-    <input type="hidden" name="kode_panggilan" value="PSL">
+    <input type="hidden" name="jenis_panggilan" value="Sidang Lanjutan">
+    <input type="hidden" name="kode_panggilan" value="SL">
     <input type="hidden" name="nama_pihak" value="<?= $data['nama_pihak'] ?>">
     <input type="hidden" name="nama_jurusita" value="<?= $data['nama_jurusita'] ?>">
     <input type="hidden" name="nomor_perkara" value="<?= $data['nomor_perkara'] ?>">

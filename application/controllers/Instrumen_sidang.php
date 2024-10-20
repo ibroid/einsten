@@ -199,4 +199,58 @@ class Instrumen_sidang extends G_Controller
         "perkaraDiterima" => $perkaraDiterima,
       ]);
   }
+
+  public function tbody_daftar_instrumen()
+  {
+    // G_Input::mustHtmx();
+
+    $this->instrumenService->paniteraDatatable();
+  }
+
+  public function ubah($id)
+  {
+    if ($this->input->method() == 'post') {
+      G_Input::mustHtmx();
+
+      $pihakData = explode('#', request('pihak_id'));
+      $kodePanggilan = $this->instrumenService->kode_panggilan(request('jenis_panggilan'));
+
+      $sidang = JadwalSidang::where('perkara_id', request('perkara_id'))->whereDate('tanggal_sidang', request('untuk_tanggal'))->first();
+
+      $data = [
+        'panitera_id' => $this->userdata->panitera_id,
+        'jurusita_id' => request('jurusita_id'),
+        'pihak_id' => $pihakData[0],
+        'jenis_panggilan' => request('jenis_panggilan'),
+        'jenis_pihak' => $pihakData[1],
+        'kode_panggilan' => $kodePanggilan,
+        'sidang_id' => $sidang->id,
+        'untuk_tanggal' => request('untuk_tanggal'),
+        'tanggal_dibuat' => date('Y-m-d')
+      ];
+
+      $this->instrumenService->update($id, $data);
+      header("HX-Redirect: " . base_url('instrumen_sidang/daftar'));
+
+      echo "ok";
+      exit;
+    }
+    $instrumen = Instrumens::findOrFail($id);
+
+    $this->load
+      ->js_plugin([
+        base_url(LocalResource::JQUERY),
+        base_url(LocalResource::HTMX),
+        PublicResource::FLATPICKR_JS,
+      ])
+      ->template("template", [
+        "menus" => $this->get_user_menu(),
+        "beranda_link" => $this->redirectPage[$this->userdata->name],
+        "title" => "Panitera"
+      ])
+      ->page("ubah_instrumen_page", [
+        "instrumen" => $instrumen,
+        "jurusita" => $this->jurusitaService->perkaraJurusita($instrumen->perkara_id)
+      ]);
+  }
 }

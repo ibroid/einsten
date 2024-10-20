@@ -9,11 +9,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class G_Service
 {
 
-  public stdClass $userdata;
+  // public Eloquent $eloquent;
 
   public function __construct()
   {
-    $this->userdata = $this->session->userdata('g_user_loged');
+    $this->load->library('Eloquent', 'eloquent');
   }
 
   /**

@@ -30,4 +30,8 @@ class Perkara extends Illuminate\Database\Eloquent\Model
     {
         return $this->hasOne(PerkaraPanitera::class, 'perkara_id', 'perkara_id');
     }
+    public function instrumen()
+    {
+        return $this->hasMany(Instrumens::class, 'perkara_id', 'perkara_id');
+    }
 }

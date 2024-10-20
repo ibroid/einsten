@@ -7,8 +7,8 @@
     <input type="hidden" name="sidang_id" value="<?= $target_sidang->id ?>">
     <input type="hidden" name="sidang_id_prev" value="<?= $sidang_id_prev ?>">
     <input type="hidden" name="perkara_id" value="<?= $perkara->perkara_id ?>">
-    <input type="hidden" name="jenis_panggilan" value="Panggilan Sidang Lanjutan">
-    <input type="hidden" name="kode_panggilan" value="PSL">
+    <input type="hidden" name="jenis_panggilan" value="Sidang Lanjutan">
+    <input type="hidden" name="kode_panggilan" value="SL">
     <input type="hidden" name="nama_pihak" id="hidden_input_nama_pihak">
     <input type="hidden" name="nama_jurusita" id="hidden_input_nama_jurusita">
     <div class="mb-3 row">
