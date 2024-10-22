@@ -54,3 +54,12 @@ if (!function_exists("dihadiri_oleh")) {
     return $kehadiran[$p] ?? "Tidak Diketahui";
   }
 }
+
+
+if (!function_exists('rupiah')) {
+  function rupiah($nominal = null)
+  {
+    $hasil = number_format($nominal, 0, ",", ".");
+    return "Rp. $hasil";
+  }
+}

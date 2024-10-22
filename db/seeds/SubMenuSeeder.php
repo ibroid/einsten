@@ -18,22 +18,24 @@ class SubMenuSeeder extends AbstractSeed
         $posts = $this->table('sub_menu');
         $posts->insert([
             [
-                "id" => 1,
                 "menu_id" => 1,
                 "link" => "/instrumen_sidang",
                 "sub_menu_name" => "Buat Instrumen"
             ],
             [
-                "id" => 2,
                 "menu_id" => 1,
                 "link" => "/instrumen_sidang/daftar",
                 "sub_menu_name" => "Daftar Instrumen"
             ],
             [
-                "id" => 2,
-                "menu_id" => 1,
-                "link" => "/instrumen_sidang/daftar",
-                "sub_menu_name" => "Daftar Instrumen"
+                "menu_id" => 6,
+                "link" => "/pencairan/jurusita",
+                "sub_menu_name" => "Pencairan Jurusita"
+            ],
+            [
+                "menu_id" => 6,
+                "link" => "/pencairan/daftar",
+                "sub_menu_name" => "Riwayat Pencairan"
             ],
         ])
             ->saveData();

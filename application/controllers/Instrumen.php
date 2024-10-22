@@ -325,10 +325,58 @@ class Instrumen extends G_Controller
                 'biaya' => request('biaya')
             ]);
 
-            echo json_encode(['message' => "Set Biaya ok"]);
+            if ($this->input->request_headers('Hx-Request') == true) {
+                header("HX-Trigger: fetchTabelKeuanganJurusita");
+            } else {
+                echo json_encode(['message' => "Set Biaya ok"]);
+            }
         } catch (\Throwable $th) {
-            set_status_header(400);
-            echo json_encode(['message' => $th->getMessage()]);
+            if ($this->input->request_headers('Hx-Request') == true) {
+                echo "Terjadi kesalahan : " . $th->getMessage();
+            } else {
+                set_status_header(400);
+                echo json_encode(['message' => $th->getMessage()]);
+            }
+        }
+    }
+
+    public function cairkan()
+    {
+        G_Input::mustPost();
+        try {
+            $this->instrumenService->update(request('id'), [
+                'pencairan' => 1,
+                'tanggal_pencairan' => date('Y-m-d')
+            ]);
+            if ($this->input->request_headers('Hx-Request') == true) {
+                header("HX-Trigger: fetchTabelKeuanganJurusita");
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function cairkan_semua()
+    {
+        G_Input::mustPost();
+        try {
+            Instrumens::where([
+                'pencairan' => 0,
+                'jurusita_id' => request('jurusita_id')
+            ])->update([
+                'pencairan' => 1,
+                'tanggal_pencairan' => date('Y-m-d')
+            ]);
+
+            if ($this->input->request_headers('Hx-Request') == true) {
+                header("HX-Trigger: fetchTabelKeuanganJurusita");
+            }
+        } catch (\Throwable $th) {
+            if ($this->input->request_headers('Hx-Request') == true) {
+                echo "Terjadi Kesalahan. Error : " . $th->getMessage();
+                exit;
+            }
+            throw $th;
         }
     }
 }

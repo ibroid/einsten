@@ -89,6 +89,14 @@ class AccessMenuSeeder extends AbstractSeed
                 "menu_id" => 8,
                 "group_id" => 600
             ],
+            [
+                "menu_id" => 9,
+                "group_id" => 1
+            ],
+            [
+                "menu_id" => 9,
+                "group_id" => 702
+            ],
         ])
             ->saveData();
     }

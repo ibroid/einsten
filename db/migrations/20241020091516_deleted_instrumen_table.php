@@ -33,6 +33,7 @@ final class DeletedInstrumenTable extends AbstractMigration
             ->addColumn("kode_panggilan", "string")
             ->addColumn("pencairan", "integer", ["length" => 1, "default" => 0])
             ->addColumn("tanggal_dihapus", "date")
+            ->addColumn("tanggal_pencarian", "date")
             ->addColumn("created_at", "timestamp")
             ->addColumn("updated_at", "timestamp")
             ->create();

@@ -68,7 +68,7 @@
                           <li>{{ps.alamat}}</li>
                           <li>
                             <button v-on:click="kirimInstrumen(ps, 1)" class="btn btn-sm btn-success">Kirim Instrumen</button>
-                            <button v-on:click="kirimDelegasi(ps, 1)" class="btn btn-sm btn-danger">Kirim Delegasi</button>
+                            <!-- <button v-on:click="kirimDelegasi(ps, 1)" class="btn btn-sm btn-danger">Kirim Delegasi</button> -->
                           </li>
                         </ul>
                       </th>
@@ -78,7 +78,7 @@
                           <li>{{pd.alamat}}</li>
                           <li>
                             <button v-on:click="kirimInstrumen(pd, 2)" class="btn btn-sm btn-success">Kirim Instrumen</button>
-                            <button v-on:click="kirimDelegasi(pd, 2)" class="btn btn-sm btn-danger">Kirim Delegasi</button>
+                            <!-- <button v-on:click="kirimDelegasi(pd, 2)" class="btn btn-sm btn-danger">Kirim Delegasi</button> -->
                           </li>
                         </ul>
                       </th>

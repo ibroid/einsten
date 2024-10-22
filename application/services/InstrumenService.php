@@ -168,4 +168,86 @@ class InstrumenService extends G_Service
 
     return $data[$par];
   }
+
+  public function belumDicairkanJurusita($jurusita_id)
+  {
+    return Instrumens::with('perkara:perkara_id,nomor_perkara,jenis_perkara_nama')
+      ->with('pihak')
+      ->where('instrumen.pencairan', 0)
+      ->where('jurusita_id', $jurusita_id)->get();
+  }
+
+  public function dicairkanHariIni()
+  {
+    return Instrumens::with('perkara:perkara_id,nomor_perkara,jenis_perkara_nama')
+      ->with('pihak')
+      ->where('instrumen.pencairan', 1)
+      ->whereDate('instrumen.tanggal_pencairan', date('Y-m-d'))
+      ->get();
+  }
+
+  public function pencairanDatatable()
+  {
+    $draw = intval($this->input->get('draw'));
+    $start = intval($this->input->get('start'));
+    $length = intval($this->input->get('length'));
+    $search = $this->input->get('search')['value'];
+
+    $dbSippName = $_ENV['DB_NAME_SIPP'];
+
+    $query = Instrumens::query()
+      ->select(
+        "instrumen.*",
+        "perkara.nomor_perkara",
+        "jenis_panggilan",
+        "jurusita.nama as nama_jurusita",
+        "pihak.nama as nama_pihak",
+        "untuk_tanggal"
+      )
+      ->leftJoin("$dbSippName.perkara", "perkara.perkara_id", "=", "instrumen.perkara_id")
+      ->leftJoin("$dbSippName.jurusita", "jurusita.id", "=", "instrumen.jurusita_id")
+      ->leftJoin("$dbSippName.pihak", "pihak.id", "=", "instrumen.pihak_id")
+      ->where("instrumen.pencairan", 1);
+    if (!empty($search)) {
+      $query
+        ->where('jenis_panggilan', 'like', "%$search%")
+        ->orWhere('nomor_perkara', 'like', "%$search%")
+        ->orWhere('pihak.nama', 'like', "%$search%")
+        ->orWhere('jurusita.nama', 'like', "%$search%")
+      ;
+    }
+
+    $totalRecords = $query->count();
+
+    $res = $query->skip($start)
+      ->take($length)
+      ->get();
+
+    $data = [];
+    $i = 1;
+
+    foreach ($res as $d) {
+      $data[] = [
+        $i,
+        $d->nomor_perkara,
+        $d->jenis_panggilan,
+        $d->nama_pihak,
+        $d->nama_jurusita,
+        tanggal_indo($d->untuk_tanggal),
+        "<span class='badge text-bg-danger'>" . rupiah($d->biaya) . "</span>",
+        tanggal_indo($d->tanggal_pencairan)
+      ];
+
+      $i++;
+    }
+
+    $output = [
+      "draw" => $draw,
+      "recordsTotal" => $totalRecords,
+      "recordsFiltered" => $totalRecords,
+      "data" => $data,
+    ];
+
+    echo json_encode($output);
+  }
 }

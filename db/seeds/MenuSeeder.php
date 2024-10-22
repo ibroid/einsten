@@ -42,8 +42,8 @@ class MenuSeeder extends AbstractSeed
                 "id" => 4,
                 "menu_name" => "Keuangan",
                 "link" => "/keuangan",
-                "is_sub" => "has-sub",
-                "icon" => "bi bi-cash-coin"
+                "is_sub" => null,
+                "icon" => "bi bi-cash"
             ],
             [
                 "id" => 5,
@@ -63,15 +63,22 @@ class MenuSeeder extends AbstractSeed
                 "id" => 7,
                 "menu_name" => "Instrumen Diterima",
                 "link" => "/jurusita_jsp/instrumen_diterima",
-                "is_sub" => "has-sub",
+                "is_sub" => null,
                 "icon" => "bi bi-inbox"
             ],
             [
                 "id" => 8,
                 "menu_name" => "Radius Nasional",
                 "link" => "/radius_nasional",
-                "is_sub" => "has-sub",
+                "is_sub" => null,
                 "icon" => "bi bi-map"
+            ],
+            [
+                "id" => 9,
+                "menu_name" => "Master Potongan",
+                "link" => "/master_potongan",
+                "is_sub" => null,
+                "icon" => "bi bi-table"
             ],
         ])
             ->saveData();
