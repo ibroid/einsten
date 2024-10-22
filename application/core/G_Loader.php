@@ -97,7 +97,7 @@ class G_Loader extends CI_Loader
         $CI->$service_name = $service;
       }
     } else {
-      show_error('Unable to load the requested service: ' . $service_name);
+      throw new Exception('Unable to load the requested service: ' . $service_name, 1);
     }
   }
 }

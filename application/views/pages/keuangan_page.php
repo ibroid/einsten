@@ -1,6 +1,6 @@
 <div class="content-wrapper container">
   <div class="page-heading">
-    <h3>Daftar Instrumen</h3>
+    <h3>Daftar Keuangan</h3>
   </div>
   <div class="page-content">
     <div class="card">
@@ -9,7 +9,7 @@
           <form
             hx-post="<?= base_url('keuangan/tampilkan') ?>"
             hx-target="#container"
-            hx-on::before-request="$('#tampilkan-button').attr('disabled', true).text('Mohon Tunggu')"
+            hx-on::before-request="$('#tampilkan-button').attr('disabled', true).text('Mohon Tunggu'); desDataTable();"
             hx-on::after-request="$('#tampilkan-button').attr('disabled', false).text('Tampilkan')">
             <div class="mb-3 row">
               <label
@@ -46,10 +46,27 @@
 
 
 <script>
+  var datatable;
+
   window.addEventListener("load", () => {
     flatpickr(".date-range-picker", {
       mode: "range",
       dateFormat: "Y-m-d",
     })
   })
+
+  function initDataTable() {
+    datatable = $("#tabel-keuangan").DataTable({
+      pageLength: 1000
+    })
+  }
+
+  function desDataTable() {
+    if (datatable) {
+      datatable.destroy()
+    }
+  }
+
+  document.addEventListener("initDataTable", initDataTable)
+  document.addEventListener("desDataTable", desDataTable)
 </script>
