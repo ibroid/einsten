@@ -59,7 +59,8 @@ class Login extends CI_Controller
 
       if (isset($this->input->request_headers()["Hx-Request"])) {
         set_status_header(200);
-        header("HX-Redirect: " . $this->redirectPage[$profile->name]);
+        header("HX-Redirect: " . base_url($this->redirectPage[$profile->name]));
+        echo "Anda akan diarahkan sebentar lagi.";
         exit;
       }
 

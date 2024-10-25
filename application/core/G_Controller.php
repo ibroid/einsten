@@ -8,7 +8,7 @@ class G_Controller extends CI_Controller
     "Panmud Gugatan" => "/panitera",
     "Panmud Permohonan" => "/panitera",
     "Panmud Hukum" => "/panitera",
-    "Jurusita" => "/jurusita",
+    "Jurusita" => "/jurusita_jsp",
     "Kasir" => "/kasir",
     "Koordinator Delegasi" => "/delegasi",
     "Super Administrator" => "/admin"

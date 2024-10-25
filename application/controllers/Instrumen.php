@@ -1,5 +1,5 @@
 <?php
-
+include_once APPPATH . "third_party/phpqrcode/qrlib.php";
 class Instrumen extends G_Controller
 {
     public InstrumenService $instrumenService;
@@ -240,8 +240,8 @@ class Instrumen extends G_Controller
         $templatedocx->setValue('nomor_perkara', $data->nomor_perkara);
         $templatedocx->setValue('tanggal_sidang', carbon()->parse($perkara->tanggal_sidang)->isoFormat('D MMMM Y'));
         $templatedocx->setValue('jenis_perkara', $perkara->jenis_perkara_text);
-        $templatedocx->setValue('nama_pihak', $data->pihak);
-        $templatedocx->setValue('alamat_pihak', $data->alamat_pihak);
+        $templatedocx->setValue('nama_pihak', $data->pihak->nama);
+        $templatedocx->setValue('alamat_pihak', $data->pihak->alamat);
         $filename = 'AMPLOP_P' . $this->jenis_pihak_simp($data->jenis_pihak) . '_' . str_replace('/', '_', $data->nomor_perkara) . '.docx';
         $templatedocx->saveAs(FCPATH . 'hasil/' . $filename);
         redirect('hasil/' . $filename);
@@ -256,7 +256,7 @@ class Instrumen extends G_Controller
         $templatedocx->setValue('nomor_perkara', $data->nomor_perkara);
         $templatedocx->setValue('tanggal_sidang', carbon()->parse($data->tanggal_sidang)->isoFormat('D MMMM Y'));
         $templatedocx->setValue('jenis_perkara', $perkara->jenis_perkara_text);
-        $templatedocx->setValue('nama_pihak', $data->pihak);
+        $templatedocx->setValue('nama_pihak', $data->pihak->nama);
         $templatedocx->setValue('nama_p', $perkara->pihak1_text);
         $templatedocx->setValue('nama_t', $perkara->pihak2_text);
 
