@@ -2,7 +2,7 @@
   <a href="#"><img src="<?= base_url($_ENV['LOGO']) ?>" alt="Logo"></a>
 </div>
 <h1 class="auth-title">Log in.</h1>
-<p class="auth-subtitle ">Selamat Datang di Aplikasi EINSTEN.</p>
+<p class="auth-subtitle ">Selamat Datang di Aplikasi Bantu SIPAPI.</p>
 <p>E-Instrumen Pengadilan Agama <?= ucwords(strtolower(sysconf()->NamaPN))  ?? "Tingkat Pertama" ?></p>
 
 <form

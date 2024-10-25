@@ -2,7 +2,7 @@
 	<a href="index.html"><img src="<?= base_url('assets/images/logo/logo.png') ?>" alt="Logo"></a>
 </div>
 <h1 class="auth-title">Log in.</h1>
-<p class="auth-subtitle ">Selamat Datang di Aplikasi EINSTEN.</p>
+<p class="auth-subtitle ">Selamat Datang di Aplikasi SIPAPI.</p>
 <p>E-Instrumen Pengadilan Agama Jakarta Timur</p>
 
 <div class="form-group position-relative has-icon-left mb-4">
