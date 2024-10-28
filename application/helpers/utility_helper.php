@@ -63,3 +63,15 @@ if (!function_exists('rupiah')) {
     return "Rp. $hasil";
   }
 }
+
+if (!function_exists('alasan_tundaan')) {
+  function deteksi_pihak_tidak_hadir()
+  {
+    return collect([
+      'memanggil penggugat',
+      'memanggil tergugat',
+      'panggil penggugat',
+      'panggil tergugat',
+    ]);
+  }
+}

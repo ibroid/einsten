@@ -45,3 +45,17 @@ class G_Controller extends CI_Controller
     return $accessableMenu;
   }
 }
+
+class API_Controller extends CI_Controller
+{
+  public Eloquent $eloquent;
+
+  public function __construct()
+  {
+    parent::__construct();
+
+    $this->load->library("Eloquent");
+    $this->eloquent->init();
+    $this->eloquent->loadModel();
+  }
+}

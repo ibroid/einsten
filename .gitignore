@@ -34,3 +34,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /tests/results/
 
 .env
+
+/watcher/*.go
+/watcher/*.mod
