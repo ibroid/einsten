@@ -9,6 +9,9 @@
 	<div class="page-content">
 		<div id="vue">
 			<section class="section">
+				<div class="alert alert-alert">
+					<h3>Perhatian</h3>
+				</div>
 				<div class="card">
 					<div class="card-header">
 						<h4 class="card-title">
