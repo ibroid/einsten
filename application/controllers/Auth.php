@@ -9,8 +9,12 @@ class Auth extends CI_Controller
 
 	public function index()
 	{
-		template('auth', 'auth/login');
+		$this->load->template("auth")->js_plugin([
+			base_url('assets/js/htmx.js'),
+			base_url('assets/js/jquery.slim.js'),
+		])->page("login");
 	}
+
 	public function login()
 	{
 		if (isset($_POST['username'])) {
@@ -49,6 +53,7 @@ class Auth extends CI_Controller
 			}
 		}
 	}
+
 	private function getLevel($key)
 	{
 		switch ($key) {

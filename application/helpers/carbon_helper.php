@@ -50,9 +50,11 @@ function terbilang($nilai)
     return $hasil;
 }
 
-function rupiah($angka)
+function rupiah($angka = null)
 {
-
-    $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+    if ($angka == null) {
+        return null;
+    }
+    $hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
     return $hasil_rupiah;
 }

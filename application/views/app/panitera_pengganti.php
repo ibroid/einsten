@@ -7,6 +7,20 @@
 		<h3>Buat Instrumen</h3>
 	</div>
 	<div class="page-content">
+		<!-- <div class="alert alert-danger">
+			<h3>Perhatian</h3>
+			<img src="<?= base_url('assets/Screenshot 2022-07-13 101802.png') ?>" alt="">
+			<ul>
+				<li>
+					<p class="text-white">Gunakan Tombol Hijau <button class="btn btn-sm btn-success">Kirim Instrumen</button> Untuk Mengirim Instrumen Ke Radius Dalam</p>
+				</li>
+				<li>
+					<p class="text-white">Gunakan Tombol Merah <button class="btn btn-sm btn-danger">Kirim Delegasi</button> Untuk Mengirim Instrumen Ke Radius Luar (Delegasi/Bang Salam)</p>
+
+				</li>
+			</ul>
+			<p>Terima Kasih</p>
+		</div> -->
 		<div id="vue">
 			<section class="section">
 				<div class="alert alert-alert">
@@ -219,13 +233,19 @@
 				const inputOption = {}
 				dataApi.jurusita.forEach(row => {
 					inputOption[row.jurusita_id] = row.jurusita_nama
-				})
+				});
+				const inputOptions = new Promise((resolve) => {
+					setTimeout(() => {
+						resolve(inputOption)
+					}, 1000)
+				});
+
 				const {
 					value: jurusita
 				} = await Swal.fire({
 					title: 'Pilih Jurusita',
-					input: 'select',
-					inputOptions: inputOption,
+					input: 'radio',
+					inputOptions: inputOptions,
 					inputPlaceholder: 'Pilih Jurusita',
 					showCancelButton: true,
 					inputValidator: (value) => {
@@ -329,7 +349,11 @@
 						confirmButtonText: 'Buat lagi'
 					}).then(result => (!result.isConfirmed) ? location.href = base_url + 'app/daftar' : false);
 				} catch (error) {
-
+					Swal.fire({
+						title: 'Error',
+						text: error,
+						icon: 'error'
+					})
 				}
 			}
 

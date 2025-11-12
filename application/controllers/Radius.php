@@ -1,37 +1,48 @@
 <?php
 require_once APPPATH . 'models/Radiuses.php';
-class Radius extends CI_Controller
+class Radius extends G_Controller
 {
     public function index()
     {
         $data = Radiuses::all();
         echo json_encode($data);
     }
+
     public function update()
     {
+        if (!isset($_SERVER['HTTP_REFERER'])) {
+            show_404();
+            exit;
+        }
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://192.168.0.212/resources/api/radius/400622");
+        curl_setopt($ch, CURLOPT_URL, 'https://komdanas.mahkamahagung.go.id/jsons/radius04.json');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
         $output = curl_exec($ch);
         curl_close($ch);
         $data = json_decode($output);
-        echo '<pre>';
+
+        echo 'start <br>';
+
         foreach ($data as $r) {
             try {
-                Radiuses::upsert([
-                    'nama_satker' => $r->nama_satker,
-                    'kode_satker' => $r->kode_satker,
-                    'kode_provinsi' => $r->kode_provinsi,
-                    'nama_provinsi' => $r->nama_provinsi,
-                    'kabupaten_kota' => $r->kabupaten_kota,
-                    'kecamatan' => $r->kecamatan,
-                    'kelurahan' => $r->kelurahan,
+                Radiuses::updateOrCreate([
+                    'kode_satker' => $r->satker_code,
+                    'nama_provinsi' => $r->prop_name,
+                    'kabupaten_kota' => $r->kabkota,
+                    'kelurahan' => $r->kel,
+                    'kecamatan' => $r->kec,
+                    'kode_provinsi' => $r->prop,
+                    'nama_satker' => $r->satker_name,
+                ], [
+                    'biaya' => $r->nilai,
                     'nomor_radius' => $r->nomor_radius,
-                    'biaya' => $r->biaya,
-                ], ['kode_satker'], ['biaya']);
+                ]);
                 echo 'sukses <br>';
             } catch (\Throwable $th) {
-                throw $th;
+                echo $th->getMessage();
+                echo '<br>';
             }
         }
     }

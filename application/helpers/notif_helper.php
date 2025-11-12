@@ -2,9 +2,21 @@
 
 function notifToJurusita($data)
 {
-    $ch = curl_init('http://192.168.0.212:3000/api/send_message');
+    $number = $data['number'];
+    $text = $data['text'];
+    $client_name = "default";
+    $ch = curl_init('http://127.0.0.1/wa/send_message');
     curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['number' => $data['number'], 'text' => $data['text']]));
+    curl_setopt(
+        $ch,
+        CURLOPT_POSTFIELDS,
+        // json_encode(['number' => $data['number'], 'text' => $data['text']])
+        "{
+            \"number\" : \"$number\",
+            \"message\" : \"$text\",
+            \"client_name\" : $client_name,
+        }"
+    );
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     $result = curl_exec($ch);

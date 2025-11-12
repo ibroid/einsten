@@ -1,7 +1,7 @@
 <?php
-require_once APPPATH . 'models/Perkara.php';
 class PerkaraJurusita extends  Illuminate\Database\Eloquent\Model
 {
+    protected $connection = 'sipp';
     protected $table = 'perkara_jurusita';
 
     public function perkara()

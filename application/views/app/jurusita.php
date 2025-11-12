@@ -10,7 +10,7 @@
 						<h4 class="card-title">{{filtername}}</h4>
 						<div class="row">
 							<div class="col-md-6">
-								<button class="btn btn-sm btn-primary">
+								<button v-on:click="fetchToday" class="btn btn-sm btn-primary">
 									<i class="bi bi-calendar"></i>
 									Instrumen Hari Ini
 								</button>
